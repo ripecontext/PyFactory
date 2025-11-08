@@ -17,7 +17,9 @@ class GameManager:
             "down": False,
             "left": False,
             "right": False,
-            "l_click": False
+            "l_click": False,
+            "scrl_up": False,
+            "scrl_down": False
         }
 
 
@@ -31,6 +33,11 @@ class GameManager:
             self.camera_position[0] += 100 * delta_time
         if(self.control_state["left"]):
             self.camera_position[0] -= 100 * delta_time
+
+        if(self.control_state["scrl_up"]):
+            self.zoom_level += 0.125
+        if(self.control_state["scrl_down"]):
+            self.zoom_level -= 0.125
 
         for entity in self.entities:
             if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):

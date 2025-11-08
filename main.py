@@ -17,7 +17,9 @@ control_map = {
     pygame.K_s: "down",
     pygame.K_a: "left",
     pygame.K_d: "right",
-    1: "l_click"
+    1: "l_click",
+    4: "scrl_up",
+    5: "scrl_down"
 }
 
 start_time = time.time()
@@ -35,13 +37,20 @@ while running:
 
     mouse_position = pygame.mouse.get_pos()
 
+    # reset scrolls
+
+    manager.control_state[control_map[4]] = False
+    manager.control_state[control_map[5]] = False
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type in [pygame.KEYDOWN, pygame.KEYUP] and event.key in control_map.keys():
             manager.control_state[control_map[event.key]] = event.type == pygame.KEYDOWN 
-        elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP] and event.button in control_map.keys():
+        elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP] and event.button in [1]:
             manager.control_state[control_map[event.button]] = event.type == pygame.MOUSEBUTTONDOWN
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button in[4,5]:
+            manager.control_state[control_map[event.button]] = True
 
     # gameloop
 
