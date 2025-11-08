@@ -21,9 +21,9 @@ class GameManager:
     def update(self, delta_time):
 
         if(self.control_state["up"]):
-            self.rect_coords[1] += 100 * delta_time
-        if(self.control_state["down"]):
             self.rect_coords[1] -= 100 * delta_time
+        if(self.control_state["down"]):
+            self.rect_coords[1] += 100 * delta_time
         if(self.control_state["right"]):
             self.rect_coords[0] += 100 * delta_time
         if(self.control_state["left"]):
