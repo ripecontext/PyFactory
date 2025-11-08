@@ -17,7 +17,7 @@ class GameManager:
 
         self.entities = []
 
-    def update(self, delta_time):
+    def update(self, delta_time, mouse_pos):
 
         if(self.control_state["up"]):
             self.entities[0].position[1] -= 100 * delta_time
@@ -28,12 +28,12 @@ class GameManager:
         if(self.control_state["left"]):
             self.entities[0].position[0] -= 100 * delta_time
 
-        if (self.control_state["l_click"]):
+        if (self.control_state["l_click"]) and self.entities[0].is_within(mouse_pos):
             self.entities[0].color = (255,0,0)
         else:
             self.entities[0].color = (255,255,255)
 
-    def draw(self, delta_time):
+    def draw(self, delta_time, mouse_pos):
 
         # draw test rect
 
@@ -43,7 +43,7 @@ class GameManager:
 
         # what keys are pressed?
 
-        keys_pressed_string = f"Up: {self.control_state["up"]} Down: {self.control_state["down"]} Left: {self.control_state["left"]} Right: {self.control_state["right"]} Left Click: {self.control_state["l_click"]}"
+        keys_pressed_string = f"Up: {self.control_state["up"]} Down: {self.control_state["down"]} Left: {self.control_state["left"]} Right: {self.control_state["right"]} Left Click: {self.control_state["l_click"]} Mouse Position: X:{mouse_pos[0]} Y:{mouse_pos[1]}"
         keys_pressed = self.main_font.render(keys_pressed_string, False, (255,255,255))
         self.window.blit(keys_pressed,(0,100))
 

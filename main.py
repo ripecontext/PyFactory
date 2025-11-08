@@ -32,6 +32,8 @@ while running:
 
     # event handling
 
+    mouse_position = pygame.mouse.get_pos()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -44,7 +46,7 @@ while running:
 
     window.fill((0,0,0))
 
-    manager.update(delta_time)
-    manager.draw(delta_time)
+    manager.update(delta_time, mouse_position)
+    manager.draw(delta_time, mouse_position)
 
     pygame.display.flip()
