@@ -10,6 +10,7 @@ pygame.display.set_caption("PyFactory")
 
 manager = GameManager(window)
 manager.entities.append(Entity([100,100], [100,100], (255, 255, 255)))
+manager.entities.append(Entity([400,100], [100,100], (255, 255, 255)))
 
 control_map = {
     pygame.K_w: "up",

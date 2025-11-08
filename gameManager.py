@@ -7,6 +7,11 @@ class GameManager:
         self.window = window
         self.main_font = pygame.font.SysFont("Bebas Neue", 30)
 
+        self.entities = []
+
+        self.camera_position = [0, 0]
+        self.zoom_level = 1
+
         self.control_state = {
             "up": False,
             "down": False,
@@ -15,23 +20,23 @@ class GameManager:
             "l_click": False
         }
 
-        self.entities = []
 
     def update(self, delta_time, mouse_pos):
 
         if(self.control_state["up"]):
-            self.entities[0].position[1] -= 100 * delta_time
+            self.camera_position[1] -= 100 * delta_time
         if(self.control_state["down"]):
-            self.entities[0].position[1] += 100 * delta_time
+            self.camera_position[1] += 100 * delta_time
         if(self.control_state["right"]):
-            self.entities[0].position[0] += 100 * delta_time
+            self.camera_position[0] += 100 * delta_time
         if(self.control_state["left"]):
-            self.entities[0].position[0] -= 100 * delta_time
+            self.camera_position[0] -= 100 * delta_time
 
-        if (self.control_state["l_click"]) and self.entities[0].is_within(mouse_pos):
-            self.entities[0].color = (255,0,0)
-        else:
-            self.entities[0].color = (255,255,255)
+        for entity in self.entities:
+            if entity.is_within(mouse_pos):
+                entity.color = (255,0,0)
+            else:
+                entity.color = (255,255,255)
 
     def draw(self, delta_time, mouse_pos):
 
@@ -39,7 +44,7 @@ class GameManager:
 
         for entity in self.entities:
 
-            entity.draw(self.window)
+            entity.draw(self.window, self.camera_position, self.zoom_level)
 
         # what keys are pressed?
 

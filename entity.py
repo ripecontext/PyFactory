@@ -1,5 +1,7 @@
 import pygame
 
+from utilities import convert_to_screenspace_coords
+
 class Entity:
 
     def __init__(self, position, size, color):
@@ -12,9 +14,11 @@ class Entity:
 
         pass
 
-    def draw(self, window):
+    def draw(self, window, offset, zoom):
 
-        pygame.draw.rect(window, self.color, self.position + self.size)
+        corrected_position = convert_to_screenspace_coords(self.position, offset, zoom)
+
+        pygame.draw.rect(window, self.color, corrected_position + self.size * zoom)
 
     def is_within(self, point):
 
