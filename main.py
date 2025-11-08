@@ -17,7 +17,7 @@ while running:
     # get delta time
 
     current_time = time.time()
-    delta_time = start_time - current_time
+    delta_time = current_time - start_time
     start_time = current_time
 
     # event handling
