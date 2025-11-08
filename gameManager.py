@@ -35,14 +35,12 @@ class GameManager:
             self.camera_position[0] -= 100 * delta_time
 
         zoom_step = 0.125
+        win_size = self.window.get_size()
+        zoom_ratio = (self.zoom_level + zoom_step) / (self.zoom_level)
         if(self.control_state["scrl_up"]):
             self.zoom_level += zoom_step
-            self.camera_position[0] += self.window.get_size()[0] * zoom_step * 0.5
-            self.camera_position[1] += self.window.get_size()[1] * zoom_step * 0.5
         if(self.control_state["scrl_down"]):
             self.zoom_level -= zoom_step
-            self.camera_position[0] -= self.window.get_size()[0] * zoom_step * 0.5
-            self.camera_position[1] -= self.window.get_size()[1] * zoom_step * 0.5
 
         for entity in self.entities:
             if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
@@ -60,12 +58,23 @@ class GameManager:
 
         # what keys are pressed?
 
-        keys_pressed_string = f"Up: {self.control_state["up"]} Down: {self.control_state["down"]} Left: {self.control_state["left"]} Right: {self.control_state["right"]} Left Click: {self.control_state["l_click"]} Mouse Position: X:{mouse_pos[0]} Y:{mouse_pos[1]}"
+        win_size = self.window.get_size()
+        cam_centre = [self.camera_position[0] + win_size[0] * 0.5 / self.zoom_level,
+                      self.camera_position[1] + win_size[1] * 0.5 / self.zoom_level]
+
+        keys_pressed_string = f"Up: {self.control_state["up"]} Down: {self.control_state["down"]} Left: {self.control_state["left"]} Right: {self.control_state["right"]} Left Click: {self.control_state["l_click"]}"
+        more_info_string = f"Mouse Position: X:{mouse_pos[0]} Y:{mouse_pos[1]} Screen Center: X:{cam_centre[0]} Y: {cam_centre[1]}"
         keys_pressed = self.main_font.render(keys_pressed_string, False, (255,255,255))
         self.window.blit(keys_pressed,(0,100))
+        more_info = self.main_font.render(more_info_string, False, (255,255,255))
+        self.window.blit(more_info,(0,130))
 
         # FPS counter
 
         fps = str(int(1 / delta_time))
         fps_counter = self.main_font.render(f"{fps}FPS", False, (255,255,255))
         self.window.blit(fps_counter,(0,0))
+
+        # crosshair
+
+        pygame.draw.circle(self.window, (0,0,255), (win_size[0] / 2, win_size[1] / 2), 3)
