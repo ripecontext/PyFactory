@@ -34,9 +34,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type in [pygame.KEYDOWN, pygame.KEYUP] and event.key in control_map.keys():
-            manager.control_state[control_map[event.key]] = 1 if event.type == pygame.KEYDOWN else 0
+            manager.control_state[control_map[event.key]] = event.type == pygame.KEYDOWN 
         elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP] and event.button in control_map.keys():
-            manager.control_state[control_map[event.button]] = 1 if event.type == pygame.MOUSEBUTTONDOWN else 0
+            manager.control_state[control_map[event.button]] = event.type == pygame.MOUSEBUTTONDOWN
 
     # gameloop
 
