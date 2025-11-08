@@ -2,12 +2,14 @@ import pygame
 import time
 
 from gameManager import GameManager
+from entity import Entity
 
 pygame.font.init()
 window = pygame.display.set_mode((960,540))
 pygame.display.set_caption("PyFactory")
 
 manager = GameManager(window)
+manager.entities.append(Entity([100,100], [100,100], (255, 255, 255)))
 
 control_map = {
     pygame.K_w: "up",

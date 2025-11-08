@@ -15,30 +15,31 @@ class GameManager:
             "l_click": False
         }
 
-        self.rect_coords = [100, 100]
-        self.rect_color = (255,255,255)
+        self.entities = []
 
     def update(self, delta_time):
 
         if(self.control_state["up"]):
-            self.rect_coords[1] -= 100 * delta_time
+            self.entities[0].position[1] -= 100 * delta_time
         if(self.control_state["down"]):
-            self.rect_coords[1] += 100 * delta_time
+            self.entities[0].position[1] += 100 * delta_time
         if(self.control_state["right"]):
-            self.rect_coords[0] += 100 * delta_time
+            self.entities[0].position[0] += 100 * delta_time
         if(self.control_state["left"]):
-            self.rect_coords[0] -= 100 * delta_time
+            self.entities[0].position[0] -= 100 * delta_time
 
         if (self.control_state["l_click"]):
-            self.rect_color = (255,0,0)
+            self.entities[0].color = (255,0,0)
         else:
-            self.rect_color = (255,255,255)
+            self.entities[0].color = (255,255,255)
 
     def draw(self, delta_time):
 
         # draw test rect
 
-        pygame.draw.rect(self.window, self.rect_color, self.rect_coords + [40,40])
+        for entity in self.entities:
+
+            entity.draw(self.window)
 
         # what keys are pressed?
 
