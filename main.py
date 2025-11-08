@@ -9,6 +9,14 @@ pygame.display.set_caption("PyFactory")
 
 manager = GameManager(window)
 
+control_map = {
+    pygame.K_w: "up",
+    pygame.K_s: "down",
+    pygame.K_a: "left",
+    pygame.K_d: "right",
+    1: "l_click"
+}
+
 start_time = time.time()
 
 running = True
@@ -25,6 +33,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type in [pygame.KEYDOWN, pygame.KEYUP] and event.key in control_map.keys():
+            manager.control_state[control_map[event.key]] = 1 if event.type == pygame.KEYDOWN else 0
+        elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP] and event.button in control_map.keys():
+            manager.control_state[control_map[event.button]] = 1 if event.type == pygame.MOUSEBUTTONDOWN else 0
 
     # gameloop
 
