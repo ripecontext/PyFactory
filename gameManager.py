@@ -34,10 +34,13 @@ class GameManager:
         if(self.control_state["left"]):
             self.camera_position[0] -= 100 * delta_time
 
+        zoom_step = 0.125
         if(self.control_state["scrl_up"]):
-            self.zoom_level += 0.125
+            self.zoom_level += zoom_step
+            self.camera_position[0] += self.window.get_size()[0] * zoom_step
         if(self.control_state["scrl_down"]):
-            self.zoom_level -= 0.125
+            self.zoom_level -= zoom_step
+            self.camera_position[1] += self.window.get_size()[1] * zoom_step
 
         for entity in self.entities:
             if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
