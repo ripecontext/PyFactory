@@ -33,7 +33,7 @@ class GameManager:
             self.camera_position[0] -= 100 * delta_time
 
         for entity in self.entities:
-            if entity.is_within(mouse_pos):
+            if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
                 entity.color = (255,0,0)
             else:
                 entity.color = (255,255,255)

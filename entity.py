@@ -20,7 +20,9 @@ class Entity:
 
         pygame.draw.rect(window, self.color, corrected_position + self.size * zoom)
 
-    def is_within(self, point):
+    def mouse_over(self, point, offset, zoom):
 
-        return (self.position[0] < point[0] < self.position[0] + self.size[0] and
-                self.position[1] < point[1] < self.position[1] + self.size[1])
+        corrected_position = convert_to_screenspace_coords(self.position, offset, zoom)
+
+        return (corrected_position[0] < point[0] < corrected_position[0] + self.size[0] * zoom and
+                corrected_position[1] < point[1] < corrected_position[1] + self.size[1] * zoom)
