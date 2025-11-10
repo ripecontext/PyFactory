@@ -16,7 +16,7 @@ offsets = [[0,64],[32,64],[0,96],[32,96]]
 manager = GameManager(window)
 
 for x in range(1024):
-    manager.tiles.append(Tile([x % 32, x // 32], "resources/tiles/stone.png", offsets[random.randint(0,3)]))
+    manager.tiles.append(Tile([x % 32, x // 32],[100,100,100]))
 
 control_map = {
     pygame.K_w: "up",

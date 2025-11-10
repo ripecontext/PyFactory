@@ -66,6 +66,10 @@ class GameManager:
             if not any([entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level) for entity in self.entities]):
                 self.entities.append(Entity([mouse_coords_tile[0]*32,mouse_coords_tile[1]*32],[32,32],[0,255,0]))
                 print(mouse_coords_tile)
+        if(self.control_state["r_click"]):
+            for entity in self.entities:
+                if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
+                    self.entities.remove(entity)
 
         for entity in self.entities:
             if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
