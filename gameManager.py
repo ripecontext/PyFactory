@@ -37,26 +37,25 @@ class GameManager:
             self.camera_position[0] -= 100 * delta_time
 
         zoom_step = 0.125
-        win_size_adjusted = (self.window.get_size()[0] / self.zoom_level, self.window.get_size()[1] / self.zoom_level)
+        cam_centre = self.calculate_cam_centre()
 
         if(self.control_state["scrl_up"]) and self.zoom_level < 4:
-
-            difference = [self.old_win_size[0] - win_size_adjusted[0], self.old_win_size[1] - win_size_adjusted[1]]
-            self.old_win_size = win_size_adjusted
             
             self.zoom_level += zoom_step
-            
-            self.camera_position[0] += difference[0] / 2
-            self.camera_position[1] += difference[1] / 2
 
         if(self.control_state["scrl_down"]) and self.zoom_level > 0.125:
 
-            difference = [self.old_win_size[0] - win_size_adjusted[0], self.old_win_size[1] - win_size_adjusted[1]]
-            self.old_win_size = win_size_adjusted
-
             self.zoom_level -= zoom_step
-            self.camera_position[0] += difference[0] / 2
-            self.camera_position[1] += difference[1] / 2
+
+        new_cam_centre = self.calculate_cam_centre()
+        difference = [new_cam_centre[0] - cam_centre[0],
+                      new_cam_centre[1] - cam_centre[1]]
+        
+        if difference[0] != 0:
+            print(difference)
+            
+        self.camera_position[0] -= difference[0]
+        self.camera_position[1] -= difference[1]
             
 
         for entity in self.entities:
@@ -95,3 +94,10 @@ class GameManager:
         # crosshair
 
         pygame.draw.circle(self.window, (0,0,255), (win_size[0] / 2, win_size[1] / 2), 3)
+
+    def calculate_cam_centre(self):
+
+        win_size_adjusted = (self.window.get_size()[0] / self.zoom_level, self.window.get_size()[1] / self.zoom_level)
+        cam_centre = [self.camera_position[0] + win_size_adjusted[0] / 2,
+                      self.camera_position[1] + win_size_adjusted[1] / 2]
+        return cam_centre
