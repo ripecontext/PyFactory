@@ -1,6 +1,6 @@
 import pygame
 
-from utilities import convert_from_screenscape_coords, get_mouse_tile_coords
+from utilities import *
 from entity import Entity
 
 class GameManager:
@@ -93,7 +93,8 @@ class GameManager:
         # selection box
 
         mouse_coords = get_mouse_tile_coords(mouse_pos, self.camera_position, self.zoom_level)
-        pygame.draw.rect(self.window, (255,255,0), mouse_coords+[32*self.zoom_level,32*self.zoom_level],1)
+        adjusted_position = convert_to_screenspace_coords([mouse_coords[0] * 32, mouse_coords[1] * 32], self.camera_position, self.zoom_level)
+        pygame.draw.rect(self.window, (255,255,0), adjusted_position+[32*self.zoom_level,32*self.zoom_level],2)
 
         # what keys are pressed?
 
