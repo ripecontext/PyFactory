@@ -8,6 +8,7 @@ class GameManager:
         self.main_font = pygame.font.SysFont("Bebas Neue", 30)
 
         self.entities = []
+        self.tiles = []
 
         self.camera_position = [0, 0]
         self.zoom_level = 1
@@ -50,13 +51,9 @@ class GameManager:
         new_cam_centre = self.calculate_cam_centre()
         difference = [new_cam_centre[0] - cam_centre[0],
                       new_cam_centre[1] - cam_centre[1]]
-        
-        if difference[0] != 0:
-            print(difference)
             
         self.camera_position[0] -= difference[0]
         self.camera_position[1] -= difference[1]
-            
 
         for entity in self.entities:
             if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
@@ -66,7 +63,13 @@ class GameManager:
 
     def draw(self, delta_time, mouse_pos):
 
-        # draw test rect
+        # draw tiles
+
+        for tile in self.tiles:
+
+            tile.draw(self.window, self.camera_position, self.zoom_level)
+
+        # draw entities
 
         for entity in self.entities:
 

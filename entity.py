@@ -6,8 +6,8 @@ class Entity:
 
     def __init__(self, position, size, color):
 
-        self.position = position
-        self.size = size
+        self.position = [position[0], position[1]]
+        self.size = [size[0], size[1]]
         self.color = color
 
     def update(self):

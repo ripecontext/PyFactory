@@ -1,16 +1,24 @@
 import pygame
 import time
+import random
 
 from gameManager import GameManager
 from entity import Entity
+from tile import Tile
 
 pygame.font.init()
 window = pygame.display.set_mode((960,540))
 pygame.display.set_caption("PyFactory")
 
+stone_tilemap = pygame.image.load("resources/tiles/stone.png")
+offsets = [[0,64],[32,64],[0,96],[32,96]]
+
 manager = GameManager(window)
-manager.entities.append(Entity([100,100], [100,100], (255, 255, 255)))
-manager.entities.append(Entity([400,100], [100,100], (255, 255, 255)))
+manager.entities.append(Entity([64,64], [64,64], (255, 255, 255)))
+manager.entities.append(Entity([256,64], [64,64], (255, 255, 255)))
+
+for x in range(1024):
+    manager.tiles.append(Tile([x % 32, x // 32], "resources/tiles/stone.png", offsets[random.randint(0,3)]))
 
 control_map = {
     pygame.K_w: "up",
