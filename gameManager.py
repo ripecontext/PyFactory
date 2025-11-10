@@ -12,6 +12,8 @@ class GameManager:
         self.camera_position = [0, 0]
         self.zoom_level = 1
 
+        self.old_win_size = self.window.get_size()
+
         self.control_state = {
             "up": False,
             "down": False,
@@ -35,12 +37,27 @@ class GameManager:
             self.camera_position[0] -= 100 * delta_time
 
         zoom_step = 0.125
-        win_size = self.window.get_size()
-        zoom_ratio = (self.zoom_level + zoom_step) / (self.zoom_level)
-        if(self.control_state["scrl_up"]):
+        win_size_adjusted = (self.window.get_size()[0] / self.zoom_level, self.window.get_size()[1] / self.zoom_level)
+
+        if(self.control_state["scrl_up"]) and self.zoom_level < 4:
+
+            difference = [self.old_win_size[0] - win_size_adjusted[0], self.old_win_size[1] - win_size_adjusted[1]]
+            self.old_win_size = win_size_adjusted
+            
             self.zoom_level += zoom_step
-        if(self.control_state["scrl_down"]):
+            
+            self.camera_position[0] += difference[0] / 2
+            self.camera_position[1] += difference[1] / 2
+
+        if(self.control_state["scrl_down"]) and self.zoom_level > 0.125:
+
+            difference = [self.old_win_size[0] - win_size_adjusted[0], self.old_win_size[1] - win_size_adjusted[1]]
+            self.old_win_size = win_size_adjusted
+
             self.zoom_level -= zoom_step
+            self.camera_position[0] += difference[0] / 2
+            self.camera_position[1] += difference[1] / 2
+            
 
         for entity in self.entities:
             if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
