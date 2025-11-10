@@ -1,6 +1,6 @@
 import pygame
 
-from utilities import convert_from_screenscape_coords
+from utilities import convert_from_screenscape_coords, get_mouse_tile_coords
 from entity import Entity
 
 class GameManager:
@@ -32,6 +32,8 @@ class GameManager:
 
     def update(self, delta_time, mouse_pos):
 
+        # camera movements
+
         if(self.control_state["up"]):
             self.camera_position[1] -= 100 * delta_time
         if(self.control_state["down"]):
@@ -40,6 +42,8 @@ class GameManager:
             self.camera_position[0] += 100 * delta_time
         if(self.control_state["left"]):
             self.camera_position[0] -= 100 * delta_time
+
+        # zoom handling
 
         zoom_step = 0.125
         cam_centre = self.calculate_cam_centre()
@@ -59,8 +63,9 @@ class GameManager:
         self.camera_position[0] -= difference[0]
         self.camera_position[1] -= difference[1]
 
-        absolute_mouse_coordinates = convert_from_screenscape_coords(mouse_pos, self.camera_position, self.zoom_level)
-        mouse_coords_tile = [absolute_mouse_coordinates[0] // 32, absolute_mouse_coordinates[1] // 32]
+        # mouse clicking
+
+        mouse_coords_tile = get_mouse_tile_coords(mouse_pos, self.camera_position, self.zoom_level)
 
         if(self.control_state["l_click"]):
             if not any([entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level) for entity in self.entities]):
@@ -70,12 +75,6 @@ class GameManager:
             for entity in self.entities:
                 if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
                     self.entities.remove(entity)
-
-        for entity in self.entities:
-            if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
-                entity.color = (255,0,0)
-            else:
-                entity.color = (255,255,255)
 
     def draw(self, delta_time, mouse_pos):
 
@@ -90,6 +89,11 @@ class GameManager:
         for entity in self.entities:
 
             entity.draw(self.window, self.camera_position, self.zoom_level)
+
+        # selection box
+
+        mouse_coords = get_mouse_tile_coords(mouse_pos, self.camera_position, self.zoom_level)
+        pygame.draw.rect(self.window, (255,255,0), mouse_coords+[32*self.zoom_level,32*self.zoom_level],1)
 
         # what keys are pressed?
 
@@ -114,9 +118,11 @@ class GameManager:
 
         pygame.draw.circle(self.window, (0,0,255), (win_size[0] / 2, win_size[1] / 2), 3)
 
+
     def calculate_cam_centre(self):
 
         win_size_adjusted = (self.window.get_size()[0] / self.zoom_level, self.window.get_size()[1] / self.zoom_level)
         cam_centre = [self.camera_position[0] + win_size_adjusted[0] / 2,
                       self.camera_position[1] + win_size_adjusted[1] / 2]
         return cam_centre
+        

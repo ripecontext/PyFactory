@@ -11,3 +11,9 @@ def convert_from_screenscape_coords(pos, offset, zoom):
     zoom_unadjusted = [pos[0] / zoom, pos[1] / zoom]
     unoffset_coords = [zoom_unadjusted[0] + offset[0], zoom_unadjusted[1] + offset[1]]
     return unoffset_coords
+
+def get_mouse_tile_coords(pos, offset, zoom):
+
+    absolute_mouse_coordinates = convert_from_screenscape_coords(pos, offset, zoom)
+    mouse_coords_tile = [absolute_mouse_coordinates[0] // 32, absolute_mouse_coordinates[1] // 32]
+    return mouse_coords_tile
