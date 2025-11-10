@@ -60,7 +60,7 @@ class GameManager:
         self.camera_position[1] -= difference[1]
 
         absolute_mouse_coordinates = convert_from_screenscape_coords(mouse_pos, self.camera_position, self.zoom_level)
-        mouse_coords_tile = [absolute_mouse_coordinates[0] % 32, absolute_mouse_coordinates[1] % 32]
+        mouse_coords_tile = [absolute_mouse_coordinates[0] // 32, absolute_mouse_coordinates[1] // 32]
 
         if(self.control_state["l_click"]):
             if not any([entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level) for entity in self.entities]):
