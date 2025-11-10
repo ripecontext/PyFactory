@@ -1,5 +1,7 @@
 import pygame
 
+from utilities import convert_from_screenscape_coords
+
 class GameManager:
 
     def __init__(self, window):
@@ -21,6 +23,7 @@ class GameManager:
             "left": False,
             "right": False,
             "l_click": False,
+            "r_click": False,
             "scrl_up": False,
             "scrl_down": False
         }
@@ -54,6 +57,9 @@ class GameManager:
             
         self.camera_position[0] -= difference[0]
         self.camera_position[1] -= difference[1]
+
+        if(self.control_state["l_click"]):
+            print(convert_from_screenscape_coords(mouse_pos, self.camera_position, self.zoom_level))
 
         for entity in self.entities:
             if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):

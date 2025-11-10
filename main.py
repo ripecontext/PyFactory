@@ -14,8 +14,6 @@ stone_tilemap = pygame.image.load("resources/tiles/stone.png")
 offsets = [[0,64],[32,64],[0,96],[32,96]]
 
 manager = GameManager(window)
-manager.entities.append(Entity([64,64], [64,64], (255, 255, 255)))
-manager.entities.append(Entity([256,64], [64,64], (255, 255, 255)))
 
 for x in range(1024):
     manager.tiles.append(Tile([x % 32, x // 32], "resources/tiles/stone.png", offsets[random.randint(0,3)]))
@@ -26,6 +24,7 @@ control_map = {
     pygame.K_a: "left",
     pygame.K_d: "right",
     1: "l_click",
+    3: "r_click",
     4: "scrl_up",
     5: "scrl_down"
 }
@@ -55,7 +54,7 @@ while running:
             running = False
         elif event.type in [pygame.KEYDOWN, pygame.KEYUP] and event.key in control_map.keys():
             manager.control_state[control_map[event.key]] = event.type == pygame.KEYDOWN 
-        elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP] and event.button in [1]:
+        elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP] and event.button in [1,3]:
             manager.control_state[control_map[event.button]] = event.type == pygame.MOUSEBUTTONDOWN
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button in[4,5]:
             manager.control_state[control_map[event.button]] = True
