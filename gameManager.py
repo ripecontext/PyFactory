@@ -2,6 +2,7 @@ import pygame
 
 from utilities import *
 from entity import Entity
+from belt import Belt
 
 class GameManager:
 
@@ -17,17 +18,21 @@ class GameManager:
         self.zoom_level = 1
 
         self.old_win_size = self.window.get_size()
+        self.rotation = 0
 
         self.control_state = {
             "up": False,
             "down": False,
             "left": False,
             "right": False,
+            "r": False,
             "l_click": False,
             "r_click": False,
             "scrl_up": False,
             "scrl_down": False
         }
+
+        self.last_control_state = {}
 
 
     def update(self, delta_time, mouse_pos):
@@ -69,12 +74,28 @@ class GameManager:
 
         if(self.control_state["l_click"]):
             if not any([entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level) for entity in self.entities]):
-                self.entities.append(Entity([mouse_coords_tile[0]*32,mouse_coords_tile[1]*32],[32,32],[0,255,0]))
+                self.entities.append(Belt([mouse_coords_tile[0]*32,mouse_coords_tile[1]*32],(0,0,255),self.rotation))
                 print(mouse_coords_tile)
         if(self.control_state["r_click"]):
             for entity in self.entities:
                 if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
                     self.entities.remove(entity)
+
+        # rotation
+
+        rotated_item = False
+        if(self.control_state["r"]):
+            for entity in self.entities:
+                if entity.mouse_over(mouse_pos, self.camera_position, self.zoom_level):
+                    entity.rotation = (entity.rotation + 1) % 4
+                    rotated_item = True
+
+            if not rotated_item:
+                self.rotation = (self.rotation + 1) % 4
+
+        # stores control state for "on click" actions next time
+
+        self.last_control_state = self.control_state
 
     def draw(self, delta_time, mouse_pos):
 

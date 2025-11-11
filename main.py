@@ -23,6 +23,7 @@ control_map = {
     pygame.K_s: "down",
     pygame.K_a: "left",
     pygame.K_d: "right",
+    pygame.K_r: "r",
     1: "l_click",
     3: "r_click",
     4: "scrl_up",
